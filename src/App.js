@@ -1,13 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-
+``
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p class=" text-yellow-300">
-          Edit <code>src/App.js</code> yo this shit working
+          Edit <code>it a lil change</code> yo this shit working
         </p>
         <a
           className="App-link"
