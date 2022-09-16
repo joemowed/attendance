@@ -4,9 +4,10 @@
   "description": "attendance app",
   "main": "tailwind.config.js",
   "scripts": {
-    "build:tailwind": "npx tailwindcss -i src/index_tailwind.css -o src/index.css",
+    "build:index:tailwind": "npx tailwindcss -i src/index_tailwind.css -o src/index.css --minify",
+    "build:navbar:tailwind": "npx tailwindcss -i src/navbar_tailwind.css -o src/navbar.css --minify",
     "start": "react-scripts start",
-    "build": "npm run build:tailwind && react-scripts build",
+    "build": "npm run build:index:tailwind && npm run build:navbar:tailwind && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

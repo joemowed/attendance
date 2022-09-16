@@ -1,7 +1,7 @@
 
-import './App.css';
+import './navbar.css';
 import React from 'react';
-function App() {
+function navbar() {
   return (
     <div className="App">
       <header className="App-header">
@@ -22,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default navbar;
