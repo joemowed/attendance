@@ -7,7 +7,8 @@
       "default",
       {
         "ignore": [
-          "-webkit-text-size-adjust"
+          "-webkit-text-size-adjust",
+          "scroll-behavior"
         ]
       }
     ],
@@ -18,6 +19,7 @@
           "meta[name=theme-color]"
         ]
       }
-    ]
+    ],
+    "css-prefix-order": "off"
   }
 }

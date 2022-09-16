@@ -1,25 +1,14 @@
 
 import './navbar.css';
 import React from 'react';
-function navbar() {
+function Navbar() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="navbar">
+      
+        <p className="mx-auto w-20 bg-yellow-500 my-8 rounded-md" >yo this shit working</p>
         
-        <p>
-          Edit <code>src/App.js</code> yo this shit working
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
     </div>
   );
 }
 
-export default navbar;
+export default Navbar;

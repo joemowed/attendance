@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import navbar from './navbar';
+import Navbar from './navbar';
 
-const root = ReactDOM.createRoot(document.getElementById('root')!);
-root.render(
-  <React.StrictMode>
-    <navbar />
-  </React.StrictMode>
+const navbar = ReactDOM.createRoot(document.getElementById('navbar')!);
+navbar.render(
+    <Navbar />
+    
 );
+
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
