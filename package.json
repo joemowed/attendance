@@ -4,6 +4,8 @@
   "description": "attendance app",
   "main": "tailwind.config.js",
   "scripts": {
+    "build:index:tailwindw": "npx tailwindcss -i src/index_tailwind.css -o src/index.css --watch",
+    "build:navbar:tailwindw": "npx tailwindcss -i src/navbar_tailwind.css -o src/navbar.css --watch",   
     "build:index:tailwind": "npx tailwindcss -i src/index_tailwind.css -o src/index.css --minify",
     "build:navbar:tailwind": "npx tailwindcss -i src/navbar_tailwind.css -o src/navbar.css --minify",
     "start": "react-scripts start",
