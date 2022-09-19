@@ -2,17 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style/compiled/index.css';
 import Navbar from './navbar';
-import AuthTest from './authTest';
+import AuthTest from './auth';
 import { SignatureKind } from 'typescript';
 
 const navbar = ReactDOM.createRoot(document.getElementById('navbar')!);
 navbar.render(
     <Navbar />
-    
+
 );
 const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
 signIn.render(
+
     <AuthTest />
+
 );
 
 
