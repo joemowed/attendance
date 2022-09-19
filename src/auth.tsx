@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-
-import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect, User, updateCurrentUser } from "firebase/auth";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect, User, updateCurrentUser } from "firebase/auth";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import userEvent from '@testing-library/user-event';
@@ -31,48 +31,21 @@ function signInWithGoogle() {
     console.log(signInWithRedirect(auth, provider))
 }
 // @ts-ignore
-
-
-
-function AuthTest(request: string) {
+function SIGNOUT() {
     const auth = getAuth(attendancefb);
-    let userUpdater = {
-        uid: "udf",
-        displayName: "udf",
-        photoURL: "udf",
-        email: "udf",
-        phoneNumber: "udf",
-        emailVerified: false,
+    console.log("signedOUt");
+    signOut(auth);
+}
 
 
 
-    };
-    const [myUser, setMyUser] = useState(userUpdater);
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            // User is signed in, see docs for a list of available properties
-            userUpdater.uid! = user.uid!;
-            userUpdater.emailVerified! = user.emailVerified!;
-            userUpdater.displayName! = user.displayName!;
-            userUpdater.phoneNumber! = user.phoneNumber!;
-            userUpdater.email! = user.email!;
-            userUpdater.photoURL! = user.photoURL!;
+function AuthTest() {
+    const auth = getAuth(attendancefb);
+    console.log(useAuthState(auth))
 
-
-            setMyUser(userUpdater);
-            console.log(myUser);
-            // ...
-        } else {
-            console.log("no user login");
-
-        }
-
-
-
-    });
-    if (request === "userInfo") {
-        return myUser;
-    }
-
+    return (
+        <div>
+            <p>{useAuthState(auth)[0]?.email}</p>;
+        </div>
 }
 export default AuthTest;
