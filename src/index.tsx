@@ -10,10 +10,11 @@ navbar.render(
     <Navbar />
 
 );
+const email = AuthTest("userInfo")?.email
 const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
 signIn.render(
+    <p>email is {email}</p>
 
-    <AuthTest />
 
 );
 

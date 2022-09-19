@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect, User, updateCurrentUser } from "firebase/auth";
 // Import the functions you need from the SDKs you need
@@ -34,42 +34,45 @@ function signInWithGoogle() {
 
 
 
-function getUserInfo() {
-    let currentUser: User;
+function AuthTest(request: string) {
     const auth = getAuth(attendancefb);
+    let userUpdater = {
+        uid: "udf",
+        displayName: "udf",
+        photoURL: "udf",
+        email: "udf",
+        phoneNumber: "udf",
+        emailVerified: false,
+
+
+
+    };
+    const [myUser, setMyUser] = useState(userUpdater);
     onAuthStateChanged(auth, (user) => {
         if (user) {
             // User is signed in, see docs for a list of available properties
-            // https://firebase.google.com/docs/reference/js/firebase.User
-            currentUser = user;
-            console.log(currentUser);
+            userUpdater.uid! = user.uid!;
+            userUpdater.emailVerified! = user.emailVerified!;
+            userUpdater.displayName! = user.displayName!;
+            userUpdater.phoneNumber! = user.phoneNumber!;
+            userUpdater.email! = user.email!;
+            userUpdater.photoURL! = user.photoURL!;
+
+
+            setMyUser(userUpdater);
+            console.log(myUser);
             // ...
         } else {
-            console.log(currentUser);
+            console.log("no user login");
+
         }
 
 
 
     });
-    if (currentUser!) {
-        console.log("user is defined");
-        return currentUser;
-
+    if (request === "userInfo") {
+        return myUser;
     }
-    else {
-        console.log("user is undefined");
-        return;
-    }
-}
 
-function AuthTest() {
-    return (
-        <div>
-            <p onClick={signInWithGoogle}>BIG G</p>
-            <p>Email is: {React.memo}</p>
-
-
-        </div>
-    );
 }
 export default AuthTest;

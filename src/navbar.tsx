@@ -5,7 +5,7 @@ function Navbar() {
   return (
     <div className="navbar">
 
-      <p className="mx-auto h-20  bg-blue-500/60  rounded-b-xl" >yo this shit working</p>
+      <p className="mx-auto h-20  bg-blue-500/60  rounded-b-xl" ></p>
 
     </div>
   );
