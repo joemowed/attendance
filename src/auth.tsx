@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { getAuth, signInWithPopup, signOut, GoogleAuthProvider, onAuthStateChanged, signInWithRedirect, User, updateCurrentUser } from "firebase/auth";
 // Import the functions you need from the SDKs you need
+//@ts-ignore
+import bigG from './assets/bigG.png';
 import { initializeApp } from "firebase/app";
+import './style/compiled/auth.css';
 import userEvent from '@testing-library/user-event';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -36,16 +39,35 @@ function SIGNOUT() {
     console.log("signedOUt");
     signOut(auth);
 }
+interface userProps {
+    user: User,
+    loading: boolean,
+}
 
-
+const signInWithGoogleButton =
+    (
+        <img src={bigG} onClick={signInWithGoogle} alt='sign in with google' className='bg-transparent border-4 border-teal-500 hover:opacity-100 opacity-80 active:opacity-80 w-16 rounded-2xl m-2 h-16' />
+    );
 
 function AuthTest() {
     const auth = getAuth(attendancefb);
-    console.log(useAuthState(auth))
+    const user = useAuthState(auth)[0];
+    console.log(user)
+    let renderThis;
+    if (user) {
+        const keys = Object.keys(user!);
+        const values = Object.values(user!);
 
+        renderThis = keys.map((key) => {
+            return (<li>{key + " is " + values[keys.indexOf(key)]}</li>)
+        })
+    }
     return (
-        <div>
-            <p>{useAuthState(auth)[0]?.email}</p>;
+        <div className='mx-20 w-auto h-52 rounded-b bg-teal-400/40'>
+            <p>some content</p>
+            {signInWithGoogleButton}
         </div>
+    );
 }
+
 export default AuthTest;

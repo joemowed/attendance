@@ -3,9 +3,9 @@ import './style/compiled/navbar.css';
 import React from 'react';
 function Navbar() {
   return (
-    <div className="navbar">
+    <div className="navbar mx-auto h-20  w-full  bg-teal-500/80 text-white text-5xl font-light items-center flex font-mono rounded-b-xl">
 
-      <p className="mx-auto h-20  bg-blue-500/60  rounded-b-xl" ></p>
+      <p>some content</p>
 
     </div>
   );

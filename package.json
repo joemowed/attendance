@@ -5,6 +5,10 @@
   "main": "tailwind.config.js",
   "scripts": {
     "build:indexPlain:tailwind": "npx tailwindcss -i public/indexPlain_tailwind.css -o public/indexPlain.css --minify",
+    "build:indexPlain:tailwindw": "npx tailwindcss -i public/indexPlain_tailwind.css -o public/indexPlain.css --watch",
+    "build:auth:tailwind": "npx tailwindcss -i src/style/tailwind/auth_tailwind.css -o src.style/compiled/auth.css --minify",
+    "build:auth:tailwindw": "npx tailwindcss -i src/style/tailwind/auth_tailwind.css -o src.style/compiled/auth.css --watch",
+
     "build:index:tailwindw": "npx tailwindcss -i src/style/tailwind/index_tailwind.css -o src/style/compiled/index.css --watch",
     "build:navbar:tailwindw": "npx tailwindcss -i src/style/tailwind/navbar_tailwind.css -o src/style/compiled/navbar.css --watch",
     "build:index:tailwind": "npx tailwindcss -i src/style/tailwind/index_tailwind.css -o src/style/compiled/index.css --minify",

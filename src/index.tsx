@@ -7,14 +7,14 @@ import { SignatureKind } from 'typescript';
 
 const navbar = ReactDOM.createRoot(document.getElementById('navbar')!);
 navbar.render(
-    <React.StrictMode>
-        <Navbar />
-    </React.StrictMode>
+    <Navbar />
+
 );
 const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
-//AuthTest();
 signIn.render(
+
     <AuthTest />
+
 );
 
 
