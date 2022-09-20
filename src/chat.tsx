@@ -73,7 +73,7 @@ function Chatapp(props) {
 
             return (displayMessage(Object.values(docObj!.data())[0], iSentOnTrue, Object.keys(docObj!.data())[0]));
         });
-        arrR = arr.reverse()
+        arrR = arr;
         console.log(arr);
     }
 
