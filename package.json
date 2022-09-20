@@ -14,6 +14,7 @@
     "build:navbar:tailwindw": "npx tailwindcss -i src/style/tailwind/navbar_tailwind.css -o src/style/compiled/navbar.css --watch",
     "build:index:tailwind": "npx tailwindcss -i src/style/tailwind/index_tailwind.css -o src/style/compiled/index.css --minify",
     "build:navbar:tailwind": "npx tailwindcss -i src/style/tailwind/navbar_tailwind.css -o src/style/compiled/navbar.css --minify",
+    "build:tailwindw": "build:index:tailwindw && build:indexPlain:tailwindw && build:chat:tailwindw && build:navbar:tailwindw",
     "start": "react-scripts start",
     "build": "npm run build:indexPlain:tailwind && npm run build:chat:tailwind && npm run build:index:tailwind && npm run build:navbar:tailwind && react-scripts build",
     "test": "react-scripts test",

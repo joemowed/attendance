@@ -1,10 +1,11 @@
 import './style/compiled/chat.css';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { initializeApp } from 'firebase/app';
 import { collection, doc, getFirestore, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Auth, getAuth, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import ReactDOM from 'react-dom';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -25,35 +26,58 @@ function SIGNOUT() {
     console.log("signedOUt");
     signOut(auth);
 }
-function displayMessage(message: string, trueOnSent: boolean, sender: string) {
+
+function displayMessage(message: string, trueOnSent: boolean, sender: string, unix: string) {
+    const millis = Number(unix);
+    const dateObj = new Date(millis);
+    const dateArr = dateObj.toLocaleString().split(',')
+    const time = dateArr[1].slice(0, 5) + dateArr[1].slice(8, 11);
+
+
     if (trueOnSent) {
         return (
-            <div className='mt-4 bg-teal-400/20 border-2 h-16 ml-auto w-fit border-teal-400 rounded static right-0'>
-                <p className='border-teal-400 border-b-2 p-1'>{message}</p>
-                <p className='mt-1'>me</p>
-            </div>
-
+            <div>
+                <div className='mt-4 break-words max-w-[40%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem]  ml-auto w-fit border-teal-400 rounded relative right-0' >
+                    <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
+                    <p className='mt-1 pl-5'>me</p>
+                </div>
+                <p className='w-fit ml-auto mr-4 relative right-0 italic text-gray-500 text-sm '>{time}<br />{dateArr[0]}</p>
+            </div >
         );
     }
     else {
         return (
-            <div className='mt-4 bg-teal-400/20 border-2 h-16 rounded w-fit border-teal-400 static left-0'>
-                <p className='border-teal-400 border-b-2 p-1'>{message}</p>
-                <p className='mt-1'>{sender}</p>
-            </div>
-
+            <div>
+                <div className='mt-4 break-words max-w-[40%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem] rounded  border-teal-400 relative left-0'>
+                    <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
+                    <p className='mt-1 pr-5 text-right'>{sender}</p>
+                </div>
+                <p className='w-fit mr-auto ml-4 relative left-0 italic text-gray-500 text-sm '>{time}<br />{dateArr[0]}</p>
+            </div >
         );
     }
 }
 function postMessage(name: string, msgContent: string) {
+    if (!msgContent) { return; }
     const timeStamp = JSON.stringify(Date.now());
     setDoc(doc(dataBaseRoot, "JJCHATS", timeStamp), { [name]: msgContent })
 
+}
+function autoScroller(autoScroll: boolean, ref: React.RefObject<HTMLDivElement>) {
+
+    if (autoScroll) {
+        ref!.current!.scrollTo({ top: 100000, left: 0, behavior: 'smooth' })
+        console.log("scrolling")
+    }
+    else {
+        console.log("noTTTscrolling")
+    }
 }
 //@ts-ignore
 
 function Chatapp(props) {
     const [currMsg, setCurrMsg] = useState('');
+    const [autoScroll, setAutoScroll] = useState(true);
     const auth = getAuth(attendancefb);
     const user = useAuthState(auth)[0];
     const messagesRoot = collection(dataBaseRoot, "JJCHATS");
@@ -71,11 +95,15 @@ function Chatapp(props) {
         arr = messageDocs!.map((docObj, indexOfDoc) => {
             const iSentOnTrue = (Object.keys(docObj.data())[0] === user!.displayName);
 
-            return (displayMessage(Object.values(docObj!.data())[0], iSentOnTrue, Object.keys(docObj!.data())[0]));
+            return (displayMessage(Object.values(docObj!.data())[0], iSentOnTrue, Object.keys(docObj!.data())[0], docObj!.id));
         });
         arrR = arr;
-        console.log(arr);
+
     }
+
+    console.log(autoScroll!);
+    const messageBox = useRef<HTMLDivElement>(null);
+    useEffect(() => autoScroller(autoScroll, messageBox));
 
 
 
@@ -84,24 +112,34 @@ function Chatapp(props) {
     // messageDocs.map((message))
     // console.log(messageDocs[0].data().msg)
     return (
-        <div className=' relative bg-teal-400/20 h-screen w-[50rem] mx-auto mb-12'>
-            <div>
+        <div className='absolute -translate-x-1/2 top-0 left-[50%] -z-50 py-24 bg-teal-400/20 h-full w-[50rem] mb-10 '>
+            <div ref={messageBox} className='h-4/5 pb-4 overflow-y-scroll '>
                 {arrR!}
             </div>
-            <div className='absolute bottom-0 border-teal-400 border-t-4 pt-2  self-center w-full  mb-2 grid grid-cols-2 grid-rows-1'>
-                <input className='bg-teal-400/30 border-teal-400 hover:bg-teal-400/70 w-full h-16' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
-                <p onClick={() => {
-                    if (user!.uid) {
-                        postMessage(user!.displayName!, currMsg!)
+            <div className='relative mt-8  border-teal-400 border-t-4 pt-2   w-full  mb-16 grid grid-cols-3 grid-rows-1'>
+                <input autoFocus={true
+                } onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        if (user!.uid) {
+                            postMessage(user!.displayName!, currMsg!)
+                        }
+                        setCurrMsg('');
                     }
-                    setCurrMsg('');
-                }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>send msg</p>
+                }} className='bg-teal-400/20 col-span-2 border-teal-400 hover:bg-teal-400/70 w-[2/3] h-full rounded' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
+                <p
+                    onClick={() => {
+                        if (user!.uid) {
+                            postMessage(user!.displayName!, currMsg!)
+                        }
+                        setCurrMsg('');
+                    }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>send msg</p>
 
 
-                <p onClick={SIGNOUT} className='absolute right-0 bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>sign out</p>
 
             </div>
-        </div>
+            <p onClick={() => setAutoScroll(!autoScroll)} className={((autoScroll!) ? 'bg-teal-400' : 'bg-transparent') + ' absolute  -translate-x-1/2 w-[90%] left-[50%] bottom-[8%]   border-4 border-teal-500  hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'}>Autoscroll</p>
+            <p onClick={SIGNOUT} className='absolute  -translate-x-1/2 w-[90%] left-[50%] bottom-[2.5%]  bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>sign out</p>
+        </div >
     );
 }
 export default Chatapp;
