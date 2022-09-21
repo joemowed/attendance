@@ -41,8 +41,10 @@ onAuthStateChanged(auth, (user) => {
         // uid = null;  
         const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
         signIn.render(
-
-            <AuthTest />
+            <div className='h-full w-full'>
+                <Navbar />
+                <AuthTest />
+            </div>
         );
     }
 
@@ -53,11 +55,7 @@ onAuthStateChanged(auth, (user) => {
 
 });
 
-const navbar = ReactDOM.createRoot(document.getElementById('navbar')!);
-navbar.render(
-    <Navbar />
 
-);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

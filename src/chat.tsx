@@ -37,7 +37,7 @@ function displayMessage(message: string, trueOnSent: boolean, sender: string, un
     if (trueOnSent) {
         return (
             <div>
-                <div className='mt-4 break-words max-w-[40%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem]  ml-auto w-fit border-teal-400 rounded relative right-0' >
+                <div className='mt-4 break-words max-w-[40%] mr-[3%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem]  ml-auto w-fit border-teal-400 rounded relative right-0' >
                     <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
                     <p className='mt-1 pl-5'>me</p>
                 </div>
@@ -48,7 +48,7 @@ function displayMessage(message: string, trueOnSent: boolean, sender: string, un
     else {
         return (
             <div>
-                <div className='mt-4 break-words max-w-[40%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem] rounded  border-teal-400 relative left-0'>
+                <div className='mt-4 break-words max-w-[40%] ml-[3%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem] rounded  border-teal-400 relative left-0'>
                     <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
                     <p className='mt-1 pr-5 text-right'>{sender}</p>
                 </div>
@@ -112,33 +112,35 @@ function Chatapp(props) {
     // messageDocs.map((message))
     // console.log(messageDocs[0].data().msg)
     return (
-        <div className='absolute -translate-x-1/2 top-0 left-[50%] -z-50 py-24 bg-teal-400/20 h-full w-[50rem] mb-10 '>
-            <div ref={messageBox} className='h-4/5 pb-4 overflow-y-scroll '>
+        <div className='grid grid-cols-1 grid-rows-5 -z-50  bg-teal-400/20 h-full w-[1/2]'>
+            <div ref={messageBox} className='h-full row-span-4 pb-4 overflow-y-scroll '>
                 {arrR!}
             </div>
-            <div className='relative mt-8  border-teal-400 border-t-4 pt-2   w-full  mb-16 grid grid-cols-3 grid-rows-1'>
-                <input autoFocus={true
-                } onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        if (user!.uid) {
-                            postMessage(user!.displayName!, currMsg!)
+            <div className='grid  gap-y-[3%] row-span-1 grid-rows-3 grid-cols-1'>
+                <div className=' border-teal-400 border-t-4   w-full   grid grid-cols-3 grid-rows-1'>
+                    <input autoFocus={true
+                    } onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            if (user!.uid) {
+                                postMessage(user!.displayName!, currMsg!)
+                            }
+                            setCurrMsg('');
                         }
-                        setCurrMsg('');
-                    }
-                }} className='bg-teal-400/20 col-span-2 border-teal-400 hover:bg-teal-400/70 w-[2/3] h-full rounded' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
-                <p
-                    onClick={() => {
-                        if (user!.uid) {
-                            postMessage(user!.displayName!, currMsg!)
-                        }
-                        setCurrMsg('');
-                    }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>send msg</p>
+                    }} className='bg-teal-400/20 col-span-2 border-teal-400 hover:bg-teal-400/70 w-[2/3] h-full rounded' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
+                    <p
+                        onClick={() => {
+                            if (user!.uid) {
+                                postMessage(user!.displayName!, currMsg!)
+                            }
+                            setCurrMsg('');
+                        }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>send msg</p>
 
 
 
+                </div>
+                <p onClick={() => setAutoScroll(!autoScroll)} className={((autoScroll!) ? 'bg-teal-400' : 'bg-transparent') + '   border-4 border-teal-500  hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl pt-2.5 font-bold font-mono text-clip'}>Autoscroll</p>
+                <p onClick={SIGNOUT} className='  bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl pt-2.5 font-bold font-mono text-clip'>sign out</p>
             </div>
-            <p onClick={() => setAutoScroll(!autoScroll)} className={((autoScroll!) ? 'bg-teal-400' : 'bg-transparent') + ' absolute  -translate-x-1/2 w-[90%] left-[50%] bottom-[8%]   border-4 border-teal-500  hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'}>Autoscroll</p>
-            <p onClick={SIGNOUT} className='absolute  -translate-x-1/2 w-[90%] left-[50%] bottom-[2.5%]  bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>sign out</p>
         </div >
     );
 }
