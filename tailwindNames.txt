@@ -1,0 +1,16 @@
+;Contains the identifiers for files to start in tailwind watch mode
+;does not work outside these directories
+;sets tailwindcss -i as src/style/tailwind/${LINE_FROM_THIS_FILE}_tailwind.css
+;sets tailwindcss -o as src/style/compiled/${LINE_FROM_THIS_FILE}.css
+;Either add directly to this file, or execute ./tailwind.bat LINE_TO_BE_ADDED_TO_THIS_FILE
+;Example: "./tailwind.bat index" adds new line containing "index" to this file, and creates index.css and index_tailwind.css
+;also creates _tailwind.css file with 
+;@tailwind base;
+;@tailwind components;
+;@tailwind utilities;
+;within file
+;WILL OVERWRITE EXISTING CSS IF USED WITH ARGUMENT
+index
+navbar
+chat
+auth
