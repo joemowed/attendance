@@ -25,8 +25,14 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         const chat = ReactDOM.createRoot(document.getElementById('chat')!);
         chat.render(
+            <div className='h-full w-full grid grid-rows-[10%90%] grid-cols-1'>
 
-            <Chatapp authState={getAuth(attendancefb)} />
+                <Navbar authState={getAuth(attendancefb)} firebaseState={attendancefb} />
+
+
+                <Chatapp authState={getAuth(attendancefb)} />
+            </div>
+
 
 
 

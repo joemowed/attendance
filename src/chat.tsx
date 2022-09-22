@@ -67,10 +67,10 @@ function autoScroller(autoScroll: boolean, ref: React.RefObject<HTMLDivElement>)
 
     if (autoScroll) {
         ref!.current!.scrollTo({ top: 100000, left: 0, behavior: 'smooth' })
-        console.log("scrolling")
+
     }
     else {
-        console.log("noTTTscrolling")
+
     }
 }
 //@ts-ignore
@@ -101,7 +101,6 @@ function Chatapp(props) {
 
     }
 
-    console.log(autoScroll!);
     const messageBox = useRef<HTMLDivElement>(null);
     useEffect(() => autoScroller(autoScroll, messageBox));
 
@@ -116,7 +115,7 @@ function Chatapp(props) {
             <div ref={messageBox} className='h-full row-span-4 pb-4 overflow-y-scroll '>
                 {arrR!}
             </div>
-            <div className='grid  gap-y-[3%] row-span-1 grid-rows-3 grid-cols-1'>
+            <div className='grid mb-5 gap-y-[3%] row-span-1 grid-rows-3 grid-cols-1'>
                 <div className=' border-teal-400 border-t-4   w-full   grid grid-cols-3 grid-rows-1'>
                     <input autoFocus={true
                     } onKeyDown={(e) => {
@@ -126,20 +125,20 @@ function Chatapp(props) {
                             }
                             setCurrMsg('');
                         }
-                    }} className='bg-teal-400/20 col-span-2 border-teal-400 hover:bg-teal-400/70 w-[2/3] h-full rounded' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
+                    }} className='bg-teal-400/20 col-span-2 border-teal-400 hover:bg-teal-400/70 w-full h-full rounded' title='currentMessage' type='text' value={currMsg} onChange={(updatedText) => setCurrMsg(updatedText.target.value)} />
                     <p
                         onClick={() => {
                             if (user!.uid) {
                                 postMessage(user!.displayName!, currMsg!)
                             }
                             setCurrMsg('');
-                        }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 w-24 rounded-2xl m-2 h-14 text-center text-xl pt-2.5 font-bold font-mono text-clip'>send msg</p>
+                        }} className='bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80 align-middle rounded-2xl  h-full text-center text-xl  font-bold font-mono text-clip'>send msg</p>
 
 
 
                 </div>
-                <p onClick={() => setAutoScroll(!autoScroll)} className={((autoScroll!) ? 'bg-teal-400' : 'bg-transparent') + '   border-4 border-teal-500  hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl pt-2.5 font-bold font-mono text-clip'}>Autoscroll</p>
-                <p onClick={SIGNOUT} className='  bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl pt-2.5 font-bold font-mono text-clip'>sign out</p>
+                <p onClick={() => setAutoScroll(!autoScroll)} className={((autoScroll!) ? 'bg-teal-400' : 'bg-transparent') + '   border-4 border-teal-500  hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl  font-bold font-mono text-clip'}>Autoscroll</p>
+                <p onClick={SIGNOUT} className='  bg-transparent border-4 border-teal-500 hover:bg-teal-400 hover:opacity-100 opacity-80 active:opacity-80  rounded-2xl m-2 h-full text-center text-xl  font-bold font-mono text-clip'>sign out</p>
             </div>
         </div >
     );
