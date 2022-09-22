@@ -17,6 +17,7 @@
     "build:tailwindw": "build:index:tailwindw && build:indexPlain:tailwindw && build:chat:tailwindw && build:navbar:tailwindw",
     "start": "react-scripts start",
     "build": "npm run build:indexPlain:tailwind && npm run build:chat:tailwind && npm run build:index:tailwind && npm run build:navbar:tailwind && react-scripts build",
+    "build:react": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
