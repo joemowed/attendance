@@ -76,12 +76,12 @@ function displayMessage(
         );
     }
 }
-function postMessage(name: string, msgContent: string) {
+function postMessage(uid: string, msgContent: string) {
     if (!msgContent) {
         return;
     }
     const timeStamp = JSON.stringify(Date.now());
-    setDoc(doc(dataBaseRoot, "JJCHATS", timeStamp), { [name]: msgContent });
+    setDoc(doc(dataBaseRoot, "JJCHATS", timeStamp), { [uid]: msgContent });
 }
 
 function getUidFromName(uid: string) {
@@ -120,6 +120,7 @@ function Chatapp(props: PROPS) {
         arr = messageDocs!.map((docObj, indexOfDoc) => {
             const senderId: string = Object.keys(docObj.data())[0];
             const iSentOnTrue: boolean = senderId === user!.uid;
+            console.log(iSentOnTrue)
 
             if (!uidToName[senderId]) {
                 let dName: string;
@@ -133,7 +134,7 @@ function Chatapp(props: PROPS) {
                     const updatedNames = { ...uidToName, ... { [senderId]: name! } };
 
                     setUidToName(updatedNames);
-                    console.log(updatedNames);
+
                 }, (err) => console.error('Response OK, cant read text', err))
 
 
@@ -142,7 +143,7 @@ function Chatapp(props: PROPS) {
                 // console.log(mergedNames)
 
                 const updatedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
-                console.log("ouside promise");
+                ;
                 setUidToName(updatedNames);
                 return <div></div>;
             }
@@ -177,7 +178,7 @@ function Chatapp(props: PROPS) {
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 if (user!.uid) {
-                                    postMessage(user!.displayName!, currMsg!);
+                                    postMessage(user!.uid!, currMsg!);
                                 }
                                 setCurrMsg("");
                             }
@@ -191,7 +192,7 @@ function Chatapp(props: PROPS) {
                     <p
                         onClick={() => {
                             if (user!.uid) {
-                                postMessage(user!.displayName!, currMsg!);
+                                postMessage(user!.uid!, currMsg!);
                             }
                             setCurrMsg("");
                         }}
