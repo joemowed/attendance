@@ -15,7 +15,7 @@ let profileSrc = "https://firebasestorage.googleapis.com/v0/b/attandacefb.appspo
 
 
 function Navbar(props: PROPS) {
-  console.log(profileSrc);
+
   const [attendanceUserInfo, setAttendanceUserInfo] = useState({} as attendanceUser);
 
   user = props.authState.currentUser;
@@ -23,7 +23,7 @@ function Navbar(props: PROPS) {
   useEffect(() => {
     dataBaseRoot = getFirestore(props.firebaseState);
     storageRoot = getStorage(props.firebaseState);
-    console.log("promise starting");
+
     getDoc(doc(dataBaseRoot, 'USERINFO', user!.uid))
 
       .then((snap) => {//@ts-ignore

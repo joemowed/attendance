@@ -31,7 +31,7 @@ const attendancefb = initializeApp(firebaseConfig);
 const dataBaseRoot = getFirestore(attendancefb);
 function SIGNOUT() {
     const auth = getAuth(attendancefb);
-    console.log("signedOUt");
+
     signOut(auth);
 }
 
@@ -120,8 +120,9 @@ function Chatapp(props: PROPS) {
         arr = messageDocs!.map((docObj, indexOfDoc) => {
             const senderId: string = Object.keys(docObj.data())[0];
             const iSentOnTrue: boolean = senderId === user!.uid;
-            console.log(iSentOnTrue)
 
+            console.log(!uidToName[senderId])
+            console.log((!uidToName[senderId] ? true : false))
             if (!uidToName[senderId]) {
                 let dName: string;
 
@@ -143,10 +144,11 @@ function Chatapp(props: PROPS) {
                 // console.log(mergedNames)
 
                 const updatedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
-                ;
+
                 setUidToName(updatedNames);
                 return <div></div>;
             }
+
 
             return displayMessage(
                 Object.values(docObj!.data())[0],

@@ -6,10 +6,10 @@ function docSnapToAttendanceUser(snap:DocumentSnapshot)
     const snapData = snap.data();
     let user = {photoURL:"",displayName:"",email:"", emailVerified:false, created_UNIX_MILLIS: 0, uid: ""} as attendanceUser;
     const keys = Object.keys(user);
-    console.log(keys)
+
     //@ts-ignore
     keys.forEach((key => user[key] = snapData![key]))
-    console.log(user)
+
     if(user.uid)
     {
     return user;
