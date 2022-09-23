@@ -121,9 +121,10 @@ function Chatapp(props: PROPS) {
             const senderId: string = Object.keys(docObj.data())[0];
             const iSentOnTrue: boolean = senderId === user!.uid;
 
-            console.log(!uidToName[senderId])
-            console.log((!uidToName[senderId] ? true : false))
+            console.log(`value: ${uidToName[senderId]}`)
+            console.log(`fetch: ${!uidToName[senderId]}`)
             if (!uidToName[senderId]) {
+                console.log("fetching")
                 let dName: string;
 
                 const fetchPromise = fetch("https://attandacefb.web.app/uidToName", {
