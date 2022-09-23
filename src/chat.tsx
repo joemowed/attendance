@@ -115,23 +115,19 @@ function Chatapp(props: PROPS) {
 
                     .then((responseName) => responseName.text())
                     .then((name) => {
-                        console.log(name)
 
-                        dName = name;
+                        const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
                         //@ts-ignore
-                        console.log(dName); dName = "unknown user"; setUidToName(mergedNames)
+                        setUidToName(mergedNames);
                     })
                     .catch((error) => console.error("bad request", error))
                     .finally(() => {
-                        if (!dName) {
-
-                        }
                     })
-                const mergedNames = { ...uidToName, ...{ [senderId]: [dName!] } };
+
                 // console.log(mergedNames)
 
-
-
+                const mergedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
+                setUidToName(mergedNames);
                 return <div></div>;
             }
 
