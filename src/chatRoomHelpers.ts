@@ -4,7 +4,7 @@ function docSnapToAttendanceUser(snap:DocumentSnapshot)
 {
     //@NOTICE-if snapshot is undefined, returned user data is aswell
     const snapData = snap.data();
-    let user = {photoURL:"",displayName:"",email:"",emailVerified:false, created_UNIX_MILLIS: 0, uid: ""} as attendanceUser;
+    let user = {photoURL:"",displayName:"",email:"", emailVerified:false, created_UNIX_MILLIS: 0, uid: ""} as attendanceUser;
     const keys = Object.keys(user);
     console.log(keys)
     //@ts-ignore

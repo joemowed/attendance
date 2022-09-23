@@ -40,7 +40,7 @@ function Navbar(props: PROPS) {
     <div className="  h-full  w-full overflow-clip grid grid-rows-1 grid-cols-[90%10%] bg-teal-500/80 text-white text-5xl font-light   font-mono rounded-b-xl">
 
       <p>{attendanceUserInfo.email}</p>
-      <img className="h-full p-[3%]  rounded-full " src={profileSrc} alt="" />
+      <img className="h-full p-[3%] aspect-square  rounded-full " src={profileSrc} alt="" />
     </div>
   );
 }

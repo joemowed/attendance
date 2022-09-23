@@ -6,6 +6,7 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { Auth, getAuth, signOut } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import ReactDOM from 'react-dom';
+import { cp } from 'fs';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -27,11 +28,12 @@ function SIGNOUT() {
     signOut(auth);
 }
 
-function displayMessage(message: string, trueOnSent: boolean, sender: string, unix: string) {
+function displayMessage(message: string, trueOnSent: boolean, unix: string, name: string) {
     const millis = Number(unix);
     const dateObj = new Date(millis);
     const dateArr = dateObj.toLocaleString().split(',')
     const time = dateArr[1].slice(0, 5) + dateArr[1].slice(8, 11);
+
 
 
     if (trueOnSent) {
@@ -50,17 +52,28 @@ function displayMessage(message: string, trueOnSent: boolean, sender: string, un
             <div key={unix}>
                 <div className='mt-4 break-words max-w-[40%] ml-[3%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem] rounded  border-teal-400 relative left-0'>
                     <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
-                    <p className='mt-1 pr-5 text-right'>{sender}</p>
+                    <p className='mt-1 pr-5 text-right'>{name}</p>
                 </div>
                 <p className='w-fit mr-auto ml-4 relative left-0 italic text-gray-500 text-sm '>{time}<br />{dateArr[0]}</p>
             </div >
         );
     }
+
 }
 function postMessage(name: string, msgContent: string) {
     if (!msgContent) { return; }
     const timeStamp = JSON.stringify(Date.now());
     setDoc(doc(dataBaseRoot, "JJCHATS", timeStamp), { [name]: msgContent })
+
+}
+
+function getUidFromName(uid: string) {
+    return (fetch('https://https://attandacefb.web.app//uidToName', {
+        method: 'POST',
+        mode: 'cors',
+        body: uid,
+    }));
+
 
 }
 function autoScroller(autoScroll: boolean, ref: React.RefObject<HTMLDivElement>) {
@@ -78,6 +91,7 @@ function autoScroller(autoScroll: boolean, ref: React.RefObject<HTMLDivElement>)
 function Chatapp(props: PROPS) {
     const [currMsg, setCurrMsg] = useState('');
     const [autoScroll, setAutoScroll] = useState(true);
+    const [uidToName, setUidToName] = useState({} as Record<string, string>);
     const user = useAuthState(props.authState)[0];
     const messagesRoot = collection(dataBaseRoot, "JJCHATS");
     const dbListener = useCollection(messagesRoot);
@@ -92,9 +106,37 @@ function Chatapp(props: PROPS) {
         // console.log(Object.values(messageDocs![0].data()));
         //@ts-ignore
         arr = messageDocs!.map((docObj, indexOfDoc) => {
-            const iSentOnTrue = (Object.keys(docObj.data())[0] === user!.displayName);
+            const senderId: string = Object.keys(docObj.data())[0]
+            const iSentOnTrue: boolean = senderId === user!.uid;
 
-            return (displayMessage(Object.values(docObj!.data())[0], iSentOnTrue, Object.keys(docObj!.data())[0], docObj!.id));
+            if (!uidToName[senderId]) {
+                let dName: string;
+                getUidFromName(senderId!)
+
+
+                    .then((responseName) => responseName.text())
+                    .then((name) => {
+                        console.log(name)
+
+                        dName = name;
+                        //@ts-ignore
+                        console.log(dName); dName = "unknown user"; setUidToName(mergedNames)
+                    })
+                    .catch((error) => console.error("bad request", error))
+                    .finally(() => {
+                        if (!dName) {
+
+                        }
+                    })
+                const mergedNames = { ...uidToName, ...{ [senderId]: [dName!] } };
+                // console.log(mergedNames)
+
+
+
+                return <div></div>;
+            }
+
+            return (displayMessage(Object.values(docObj!.data())[0], iSentOnTrue, docObj!.id, uidToName[senderId]));
         });
         arrR = arr;
 

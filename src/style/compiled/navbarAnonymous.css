@@ -1377,6 +1377,10 @@ input:checked + .toggle-bg {
   display: none;
 }
 
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
 .h-16 {
   height: 4rem;
 }
