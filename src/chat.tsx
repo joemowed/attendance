@@ -131,9 +131,9 @@ function Chatapp(props: PROPS) {
                 const gotText = fetchPromise.then((response) => { return response.text() }, (err) => console.error("cant read response", err))
                 gotText.then((name) => {
                     const updatedNames = { ...uidToName, ... { [senderId]: name! } };
-                    //@ts-ignore
-                    setUidToName(mergedNames);
-                    console.log(mergedNames);
+
+                    setUidToName(updatedNames);
+                    console.log(updatedNames);
                 }, (err) => console.error('Response OK, cant read text', err))
 
 
@@ -141,9 +141,9 @@ function Chatapp(props: PROPS) {
 
                 // console.log(mergedNames)
 
-                const mergedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
+                const updatedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
                 console.log("ouside promise");
-                setUidToName(mergedNames);
+                setUidToName(updatedNames);
                 return <div></div>;
             }
 
