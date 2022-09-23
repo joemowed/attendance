@@ -8,7 +8,8 @@
       {
         "ignore": [
           "-webkit-text-size-adjust",
-          "scroll-behavior"
+          "scroll-behavior",
+          "overflow: clip"
         ]
       }
     ],
@@ -21,5 +22,11 @@
       }
     ],
     "css-prefix-order": "off"
-  }
+  },
+  "browserslist": [
+    "defaults",
+    "not ie 11",
+    "not and_ff <= 104",
+    "not firefox <= 104"
+  ]
 }

@@ -1401,6 +1401,14 @@ input:checked + .toggle-bg {
   height: 100vh;
 }
 
+.h-\[10\%\] {
+  height: 10%;
+}
+
+.h-\[90\%\] {
+  height: 90%;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -1590,6 +1598,10 @@ input:checked + .toggle-bg {
   width: 16rem;
 }
 
+.w-\[20\%\] {
+  width: 20%;
+}
+
 .min-w-\[20\%\] {
   min-width: 20%;
 }
@@ -1742,6 +1754,10 @@ input:checked + .toggle-bg {
   grid-template-columns: 90%10%;
 }
 
+.grid-cols-\[85\%15\%\] {
+  grid-template-columns: 85%15%;
+}
+
 .grid-rows-5 {
   grid-template-rows: repeat(5, minmax(0, 1fr));
 }
@@ -1754,8 +1770,8 @@ input:checked + .toggle-bg {
   grid-template-rows: repeat(1, minmax(0, 1fr));
 }
 
-.grid-rows-\[10\%90\%\] {
-  grid-template-rows: 10%90%;
+.grid-rows-\[85\%15\%\] {
+  grid-template-rows: 85%15%;
 }
 
 .flex-col {
@@ -2612,6 +2628,10 @@ input:checked + .toggle-bg {
 
 .\!p-2 {
   padding: 0.5rem !important;
+}
+
+.p-\[3\%\] {
+  padding: 3%;
 }
 
 .py-5 {

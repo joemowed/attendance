@@ -14,3 +14,4 @@ index
 navbar
 chat
 auth
+navbarAnonymous

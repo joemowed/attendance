@@ -1,6 +1,6 @@
 import './style/compiled/chat.css';
 import React, { useEffect, useRef, useState } from 'react';
-import { initializeApp } from 'firebase/app';
+import { FirebaseApp, initializeApp } from 'firebase/app';
 import { collection, doc, getFirestore, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { Auth, getAuth, signOut } from 'firebase/auth';
@@ -36,7 +36,7 @@ function displayMessage(message: string, trueOnSent: boolean, sender: string, un
 
     if (trueOnSent) {
         return (
-            <div>
+            <div key={unix}>
                 <div className='mt-4 break-words max-w-[40%] mr-[3%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem]  ml-auto w-fit border-teal-400 rounded relative right-0' >
                     <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
                     <p className='mt-1 pl-5'>me</p>
@@ -47,7 +47,7 @@ function displayMessage(message: string, trueOnSent: boolean, sender: string, un
     }
     else {
         return (
-            <div>
+            <div key={unix}>
                 <div className='mt-4 break-words max-w-[40%] ml-[3%] min-w-[20%] bg-teal-400/20 border-2 min-h-[5rem] rounded  border-teal-400 relative left-0'>
                     <p className='border-teal-400 border-b-2 p-1 pl-5'>{message}</p>
                     <p className='mt-1 pr-5 text-right'>{sender}</p>
@@ -75,11 +75,10 @@ function autoScroller(autoScroll: boolean, ref: React.RefObject<HTMLDivElement>)
 }
 //@ts-ignore
 
-function Chatapp(props) {
+function Chatapp(props: PROPS) {
     const [currMsg, setCurrMsg] = useState('');
     const [autoScroll, setAutoScroll] = useState(true);
-    const auth = getAuth(attendancefb);
-    const user = useAuthState(auth)[0];
+    const user = useAuthState(props.authState)[0];
     const messagesRoot = collection(dataBaseRoot, "JJCHATS");
     const dbListener = useCollection(messagesRoot);
     //@ts-ignore
@@ -142,5 +141,10 @@ function Chatapp(props) {
             </div>
         </div >
     );
+}
+
+interface PROPS {
+    authState: Auth;
+    firebaseState: FirebaseApp;
 }
 export default Chatapp;

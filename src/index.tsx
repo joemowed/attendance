@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style/compiled/index.css';
 import Navbar from './navbar';
@@ -7,6 +7,8 @@ import AuthTest from './auth';
 import Chatapp from './chat';
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Test from './test';
+import NavbarAnonymous from './navbarAnonymous';
 const firebaseConfig = {
     apiKey: "AIzaSyC94BhdLTjxbWDNDpu1fIvYb2Jpz1QgJME",
     authDomain: "attandacefb.firebaseapp.com",
@@ -24,14 +26,19 @@ let uid: String | null | undefined = null;
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const chat = ReactDOM.createRoot(document.getElementById('chat')!);
+        const navbar = ReactDOM.createRoot(document.getElementById('navbar')!)
+        navbar.render(
+            <Navbar authState={auth} firebaseState={attendancefb} />
+        );
         chat.render(
-            <div className='h-full w-full grid grid-rows-[10%90%] grid-cols-1'>
 
-                <Navbar authState={getAuth(attendancefb)} firebaseState={attendancefb} />
+            <StrictMode>
 
 
-                <Chatapp authState={getAuth(attendancefb)} />
-            </div>
+
+                <Chatapp firebaseState={attendancefb} authState={auth} />
+            </StrictMode>
+
 
 
 
@@ -48,7 +55,8 @@ onAuthStateChanged(auth, (user) => {
         const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
         signIn.render(
             <div className='h-full w-full'>
-                <Navbar />
+                <NavbarAnonymous />
+
                 <AuthTest />
             </div>
         );

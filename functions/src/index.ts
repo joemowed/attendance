@@ -26,9 +26,15 @@ const onUserSignIn =  functions.auth.user().onCreate((user) =>
 });
 
 const makeUserFBFile =(user:UserRecord) => {
+  let url = "https://firebasestorage.googleapis.com/v0/b/attandacefb.appspot.com/o/profileimages%2Fdefault.png?alt=media&token=ad5de4b3-83c9-418f-89c3-996644257cec";
+  if(user.photoURL)
+  {
+    url = user.photoURL;
+
+  }
   let newDoc ={
     uid: user.uid,
-    photoURL: user.photoURL,
+    photoURL: url,
     displayName: user.displayName,
     email: user.email,
     emailVerified: user.emailVerified,
