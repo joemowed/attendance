@@ -68,9 +68,8 @@ function postMessage(name: string, msgContent: string) {
 }
 
 function getUidFromName(uid: string) {
-    return (fetch('https://https://attandacefb.web.app//uidToName', {
+    return (fetch('https://attandacefb.web.app/uidToName', {
         method: 'POST',
-        mode: 'cors',
         body: uid,
     }));
 
