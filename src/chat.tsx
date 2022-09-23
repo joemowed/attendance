@@ -130,7 +130,7 @@ function Chatapp(props: PROPS) {
                 })
                 const gotText = fetchPromise.then((response) => { return response.text() }, (err) => console.error("cant read response", err))
                 gotText.then((name) => {
-                    const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
+                    const updatedNames = { ...uidToName, ... { [senderId]: name! } };
                     //@ts-ignore
                     setUidToName(mergedNames);
                     console.log(mergedNames);
