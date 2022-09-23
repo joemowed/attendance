@@ -128,14 +128,16 @@ function Chatapp(props: PROPS) {
                     method: "POST",
                     body: senderId,
                 })
-                    .then((responseName) => responseName.text())
-                    .then((name) => {
-                        const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
-                        //@ts-ignore
-                        setUidToName(mergedNames);
-                        console.log(mergedNames);
+                    .then((responseName) => {
+                        responseName.text()
+                        .then((name) => {
+                            const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
+                            //@ts-ignore
+                            setUidToName(mergedNames);
+                            console.log(mergedNames);
+                        })
+                        .catch((error) => console.error("bad request", error))
                     })
-                    .catch((error) => console.error("bad request", error))
                     .catch((error) => console.error(error));
 
                 // console.log(mergedNames)
