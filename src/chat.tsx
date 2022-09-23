@@ -128,7 +128,7 @@ function Chatapp(props: PROPS) {
                     method: "POST",
                     body: senderId,
                 })
-                const gotText = fetchPromise.then((response) => { return response.text }, () => console.error("cant read response"))
+                const gotText = fetchPromise.then((response) => { console.log(response); return response.text() }, (err) => console.error("cant read response", err))
                 gotText.then((name) => {
                     const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
                     //@ts-ignore
