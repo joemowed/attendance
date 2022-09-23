@@ -119,6 +119,7 @@ function Chatapp(props: PROPS) {
                         const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
                         //@ts-ignore
                         setUidToName(mergedNames);
+                        console.log(mergedNames)
                     })
                     .catch((error) => console.error("bad request", error))
                     .finally(() => {
@@ -127,6 +128,7 @@ function Chatapp(props: PROPS) {
                 // console.log(mergedNames)
 
                 const mergedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
+                console.log("ouside promise")
                 setUidToName(mergedNames);
                 return <div></div>;
             }
