@@ -124,21 +124,20 @@ function Chatapp(props: PROPS) {
             if (!uidToName[senderId]) {
                 let dName: string;
 
-                fetch("https://attandacefb.web.app/uidToName", {
+                const fetchPromise = fetch("https://attandacefb.web.app/uidToName", {
                     method: "POST",
                     body: senderId,
                 })
-                    .then((responseName) => {
-                        responseName.text()
-                        .then((name) => {
-                            const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
-                            //@ts-ignore
-                            setUidToName(mergedNames);
-                            console.log(mergedNames);
-                        })
-                        .catch((error) => console.error("bad request", error))
-                    })
-                    .catch((error) => console.error(error));
+                const gotText = fetchPromise.then((response) => response.text, () => console.error("cant read response"))
+                gotText.then((name) => {
+                    const updatedNames = { ...uidToName, ...{ [senderId]: [name] } };
+                    //@ts-ignore
+                    setUidToName(mergedNames);
+                    console.log(mergedNames);
+                }, () => console.error('Response OK, cant read text'))
+
+
+
 
                 // console.log(mergedNames)
 

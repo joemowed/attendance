@@ -49,6 +49,8 @@ const makeUserFBFile =(user:UserRecord) => {
 //response format: text "USER_DISPLAY_NAME"
 const uidToName = functions.https.onRequest((request,response) =>
 {
+  response.set({'Access-Control-Allow-Origin': 'fdsfds'} );
+
   if(!request.body)
   {
     response.status(400).send(`No UID provided in body`);
