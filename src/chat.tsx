@@ -122,8 +122,8 @@ function Chatapp(props: PROPS) {
                         console.log(mergedNames)
                     })
                     .catch((error) => console.error("bad request", error))
-                    .finally(() => {
-                    })
+                    .catch((error) => console.error(error))
+
 
                 // console.log(mergedNames)
 
