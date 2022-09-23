@@ -120,36 +120,38 @@ function Chatapp(props: PROPS) {
         arr = messageDocs!.map((docObj, indexOfDoc) => {
             const senderId: string = Object.keys(docObj.data())[0];
             const iSentOnTrue: boolean = senderId === user!.uid;
-
+            let nonStateNames = {} as Record<string, string>;
             console.log(`value: ${uidToName[senderId]}`)
             console.log(`fetch: ${!uidToName[senderId]}`)
-            if (!uidToName[senderId]) {
-                console.log("fetching")
-                let dName: string;
+            if (!nonStateNames[senderId]) {
+                if (!uidToName[senderId]) {
+                    console.log("fetching")
+                    let dName: string;
 
-                const fetchPromise = fetch("https://attandacefb.web.app/uidToName", {
-                    method: "POST",
-                    body: senderId,
-                })
-                const gotText = fetchPromise.then((response) => { return response.text() }, (err) => console.error("cant read response", err))
-                gotText.then((name) => {
-                    const updatedNames = { ...uidToName, ... { [senderId]: name! } };
+                    const fetchPromise = fetch("https://attandacefb.web.app/uidToName", {
+                        method: "POST",
+                        body: senderId,
+                    })
+                    const gotText = fetchPromise.then((response) => { return response.text() }, (err) => console.error("cant read response", err))
+                    gotText.then((name) => {
+                        const updatedNames = { ...uidToName, ... { [senderId]: name! } };
+
+                        setUidToName(updatedNames);
+
+                    }, (err) => console.error('Response OK, cant read text', err))
+
+
+
+
+                    // console.log(mergedNames)
+
+                    const updatedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
+                    nonStateNames = { ...uidToName, ...updatedNames, ...nonStateNames }
 
                     setUidToName(updatedNames);
-
-                }, (err) => console.error('Response OK, cant read text', err))
-
-
-
-
-                // console.log(mergedNames)
-
-                const updatedNames = { ...uidToName, ...{ [senderId]: "unknown user" } };
-
-                setUidToName(updatedNames);
-                return <div></div>;
+                    return <div></div>;
+                }
             }
-
 
             return displayMessage(
                 Object.values(docObj!.data())[0],
