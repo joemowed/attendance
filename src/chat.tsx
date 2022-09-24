@@ -104,6 +104,7 @@ function autoScroller(
 function Chatapp(props: PROPS) {
     const [currMsg, setCurrMsg] = useState("");
     const [autoScroll, setAutoScroll] = useState(true);
+    let nonStateNames = {} as Record<string, string>;
     const [uidToName, setUidToName] = useState({} as Record<string, string>);
     const user = useAuthState(props.authState)[0];
     const messagesRoot = collection(dataBaseRoot, "JJCHATS");
@@ -120,7 +121,7 @@ function Chatapp(props: PROPS) {
         arr = messageDocs!.map((docObj, indexOfDoc) => {
             const senderId: string = Object.keys(docObj.data())[0];
             const iSentOnTrue: boolean = senderId === user!.uid;
-            let nonStateNames = {} as Record<string, string>;
+
             console.log(`value: ${uidToName[senderId]}`)
             console.log(`fetch: ${!uidToName[senderId]}`)
             if (!nonStateNames[senderId]) {
@@ -135,6 +136,7 @@ function Chatapp(props: PROPS) {
                     const gotText = fetchPromise.then((response) => { return response.text() }, (err) => console.error("cant read response", err))
                     gotText.then((name) => {
                         const updatedNames = { ...uidToName, ... { [senderId]: name! } };
+                        nonStateNames = { ...uidToName, ...updatedNames, ...nonStateNames }
 
                         setUidToName(updatedNames);
 
