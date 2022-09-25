@@ -23,10 +23,12 @@ const firebaseConfig = {
 const attendancefb = initializeApp(firebaseConfig);
 const auth = getAuth(attendancefb);
 let uid: String | null | undefined = null;
+const chat = ReactDOM.createRoot(document.getElementById('chat')!);
+const navbar = ReactDOM.createRoot(document.getElementById('navbar')!)
+const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        const chat = ReactDOM.createRoot(document.getElementById('chat')!);
-        const navbar = ReactDOM.createRoot(document.getElementById('navbar')!)
+
         navbar.render(
             <Navbar authState={auth} firebaseState={attendancefb} />
         );
@@ -52,14 +54,13 @@ onAuthStateChanged(auth, (user) => {
         // User is signed out
         // ...
         // uid = null;  
-        const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
-        signIn.render(
-            <div className='h-full w-full'>
-                <NavbarAnonymous />
+        navbar.render(
+            <NavbarAnonymous />
+        )
+        chat.render(
+            <AuthTest />
+        )
 
-                <AuthTest />
-            </div>
-        );
     }
 
 
