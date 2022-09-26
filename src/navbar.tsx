@@ -7,7 +7,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { get } from 'https';
 import { FirebaseApp } from 'firebase/app';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { attendanceUser, docSnapToAttendanceUser } from './chatRoomHelpers';
+import { attendanceUser, docSnapToAttendanceUser, PROPS } from './chatRoomHelpers';
 let storageRoot;
 let dataBaseRoot: Firestore;
 let user: User | null | undefined;
@@ -45,10 +45,6 @@ function Navbar(props: PROPS) {
       <img ref={image} className=" max-h-full max-w-full my-auto p-[3%] aspect-square  rounded-full " src={(attendanceUserInfo.photoURL) ? attendanceUserInfo.photoURL : profileSrc} alt="" />
     </div>
   );
-}
-interface PROPS {
-  authState: Auth;
-  firebaseState: FirebaseApp;
 }
 
 export default Navbar;

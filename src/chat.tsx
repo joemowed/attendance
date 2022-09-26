@@ -18,7 +18,7 @@ import { Auth, getAuth, signOut } from "firebase/auth";
 import ReactDOM from "react-dom";
 import { cp } from "fs";
 import { useCollection } from "react-firebase-hooks/firestore"
-import { attendanceUser, compareArrays, docSnapToAttendanceUser, getCollectionName } from "./chatRoomHelpers";
+import { attendanceUser, PROPS, docSnapToAttendanceUser, getCollectionName } from "./chatRoomHelpers";
 import { arrayBuffer } from "stream/consumers";
 
 // Your web app's Firebase configuration
@@ -46,6 +46,7 @@ function displayMessage(
     const dateArr = dateObj.toLocaleString().split(",");
     const time = dateArr[1].slice(0, 5) + dateArr[1].slice(8, 11);
     const name = (typeof ident === "string") ? ident : ident.displayName;
+    const pmObj = (trueOnSent) ? { "0000000000000000000000000000": {} as attendanceUser } : { [(ident as attendanceUser).uid]: ident };
     if (trueOnSent) {
         return (
             <div key={unix}>
@@ -68,7 +69,7 @@ function displayMessage(
                     <div className="grid grid-cols-3 grid-rows-1 h-full w-full">
                         <img className="max-h-full max-w-full min-h-[2.79rem] mt-auto mr-auto aspect-square h-14  rounded-full" alt="" crossOrigin="anonymous" src={(typeof ident === "string") ? "https://firebasestorage.googleapis.com/v0/b/attandacefb.appspot.com/o/profileimages%2Fdefault.png?alt=media&token=ad5de4b3-83c9-418f-89c3-996644257cec" : ident.photoURL} />
                         {/* @ts-ignore */}
-                        <p onClick={() => { console.log(this); set((ident as attendanceUser).uid); console.log(this.chattingState) }} className="hover:bg-teal-400/20 active:bg-teal-400/50 select-none h-[90%] w-[90%] m-auto text-center p-2 italic font-thin text-sm text-gray-500 border-2 rounded-2xl border-teal-600">Private <br />Message</p>
+                        <p onClick={() => { set(pmObj); }} className="hover:bg-teal-400/20 active:bg-teal-400/50 select-none h-[90%] w-[90%] m-auto text-center p-2 italic font-thin text-sm text-gray-500 border-2 rounded-2xl border-teal-600">Private <br />Message</p>
                         <p className="mt-1 pr-5 text-right">{name}</p>
                     </div>
                 </div>
@@ -110,11 +111,11 @@ function Chatapp(props: PROPS) {
     const [autoScroll, setAutoScroll] = useState(true);
     const [usernames, setUsernames] = useState({} as Record<string, attendanceUser>);
     const [chats, setChats] = useState([<p>LOADING...</p>])
-    const [chattingState, setChattingState] = useState("0000000000000000000000000000")
+    const [chattingState, setChattingState] = useState(Object.keys(props.chatWith)[0])
     const user = useAuthState(props.authState)[0];
     const [messagesRoot, setMessagesRoot] = useState(collection(dataBaseRoot, "JJCHATS"))
     const dbListener = useCollection(messagesRoot);
-
+    useEffect(() => { setChattingState(Object.keys(props.chatWith)[0]); console.log("hii") }, [Object.keys(props.chatWith)[0]])
     useEffect(() => {
         console.log("running")
         if (chattingState === "0000000000000000000000000000") {
@@ -137,11 +138,11 @@ function Chatapp(props: PROPS) {
                         namesQuery.push(senderID);
                         console.log(namesQuery)
                     }
-                    return (displayMessage(messageJSON, user!.uid, name, setChattingState));
+                    return (displayMessage(messageJSON, user!.uid, name, props.setChatWith));
                 }
 
 
-                return (displayMessage(messageJSON, user!.uid, usernames[senderID], setChattingState));
+                return (displayMessage(messageJSON, user!.uid, usernames[senderID], props.setChatWith));
             })
             setChats(arr);
         }
@@ -221,8 +222,5 @@ function Chatapp(props: PROPS) {
     );
 }
 
-interface PROPS {
-    authState: Auth;
-    firebaseState: FirebaseApp;
-}
+
 export default Chatapp;

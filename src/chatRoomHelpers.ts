@@ -1,5 +1,6 @@
 import { user } from "firebase-functions/v1/auth";
-import { User } from "firebase/auth";
+import { FirebaseApp } from "firebase/app";
+import { Auth, User } from "firebase/auth";
 import { DocumentSnapshot } from "firebase/firestore";
 
 function docSnapToAttendanceUser(snap:DocumentSnapshot)
@@ -68,4 +69,10 @@ function getCollectionName(user1:User, user2:attendanceUser)
     }
     return ((sum1 > sum2)? user1.uid + user2.uid : user2.uid + user1.uid)
 }
-export {docSnapToAttendanceUser,attendanceUser, compareArrays, getCollectionName}
+interface PROPS {
+    authState: Auth;
+    firebaseState: FirebaseApp;
+    chatWith:Record<string, attendanceUser>,
+    setChatWith:Function
+}
+export {docSnapToAttendanceUser,attendanceUser, compareArrays, getCollectionName, PROPS}

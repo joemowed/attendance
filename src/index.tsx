@@ -9,6 +9,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Test from './test';
 import NavbarAnonymous from './navbarAnonymous';
+import { attendanceUser } from './chatRoomHelpers';
 const firebaseConfig = {
     apiKey: "AIzaSyC94BhdLTjxbWDNDpu1fIvYb2Jpz1QgJME",
     authDomain: "attandacefb.firebaseapp.com",
@@ -26,11 +27,17 @@ let uid: String | null | undefined = null;
 const chat = ReactDOM.createRoot(document.getElementById('chat')!);
 const navbar = ReactDOM.createRoot(document.getElementById('navbar')!)
 const signIn = ReactDOM.createRoot(document.getElementById('signIn')!);
+let chatWith = {} as Record<string, attendanceUser>;
+function setChatWith(updatedChat: Record<string, attendanceUser>) {
+    chatWith = updatedChat;
+    console.log(updatedChat)
+}
+setChatWith({ "0000000000000000000000000000": {} as attendanceUser })
 onAuthStateChanged(auth, (user) => {
     if (user) {
 
         navbar.render(
-            <Navbar authState={auth} firebaseState={attendancefb} />
+            <Navbar chatWith={chatWith} setChatWith={setChatWith} authState={auth} firebaseState={attendancefb} />
         );
         chat.render(
 
@@ -38,7 +45,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 
-                <Chatapp firebaseState={attendancefb} authState={auth} />
+                <Chatapp setChatWith={setChatWith} chatWith={chatWith} firebaseState={attendancefb} authState={auth} />
             </StrictMode>
 
 
