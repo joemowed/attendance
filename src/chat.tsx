@@ -25,7 +25,7 @@ import { arrayBuffer } from "stream/consumers";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // Initialize Firebase
 let namesQuery = [] as string[];
-let chattingWith = "0000000000000000000000000000";
+
 function SIGNOUT(auth: Auth) {
 
 
@@ -35,7 +35,8 @@ function SIGNOUT(auth: Auth) {
 function displayMessage(
     messageJSON: QueryDocumentSnapshot<DocumentData>,
     readerId: string,
-    ident: string | attendanceUser
+    ident: string | attendanceUser,
+    set: Function
 ) {
     const trueOnSent = (readerId === Object.keys(messageJSON.data())[0]);
     const unix = messageJSON.id;
@@ -66,7 +67,8 @@ function displayMessage(
                     <p className="border-teal-400 border-b-2 p-1 pl-5">{message}</p>
                     <div className="grid grid-cols-3 grid-rows-1 h-full w-full">
                         <img className="max-h-full max-w-full min-h-[2.79rem] mt-auto mr-auto aspect-square h-14  rounded-full" alt="" crossOrigin="anonymous" src={(typeof ident === "string") ? "https://firebasestorage.googleapis.com/v0/b/attandacefb.appspot.com/o/profileimages%2Fdefault.png?alt=media&token=ad5de4b3-83c9-418f-89c3-996644257cec" : ident.photoURL} />
-                        <p onClick={() => { chattingWith = (ident as attendanceUser).uid; console.log(chattingWith) }} className="hover:bg-teal-400/20 active:bg-teal-400/50 select-none h-[90%] w-[90%] m-auto text-center p-2 italic font-thin text-sm text-gray-500 border-2 rounded-2xl border-teal-600">Private <br />Message</p>
+                        {/* @ts-ignore */}
+                        <p onClick={() => { console.log(this); set((ident as attendanceUser).uid); console.log(this.chattingState) }} className="hover:bg-teal-400/20 active:bg-teal-400/50 select-none h-[90%] w-[90%] m-auto text-center p-2 italic font-thin text-sm text-gray-500 border-2 rounded-2xl border-teal-600">Private <br />Message</p>
                         <p className="mt-1 pr-5 text-right">{name}</p>
                     </div>
                 </div>
@@ -79,12 +81,12 @@ function displayMessage(
         );
     }
 }
-function postMessage(uid: string, msgContent: string, dataBaseRoot: Firestore) {
+function postMessage(uid: string, msgContent: string, dataBaseRoot: Firestore, collectionString: string) {
     if (!msgContent) {
         return;
     }
     const timeStamp = JSON.stringify(Date.now());
-    setDoc(doc(dataBaseRoot, "JJCHATS", timeStamp), { [uid]: msgContent });
+    setDoc(doc(dataBaseRoot, collectionString, timeStamp), { [uid]: msgContent });
 }
 
 
@@ -105,25 +107,24 @@ function changeChatting() {
 function Chatapp(props: PROPS) {
     const dataBaseRoot = getFirestore(props.firebaseState)
     const [currMsg, setCurrMsg] = useState("");
-    const [chattingWith, setChattingWith] = useState("0000000000000000000000000000")
     const [autoScroll, setAutoScroll] = useState(true);
     const [usernames, setUsernames] = useState({} as Record<string, attendanceUser>);
     const [chats, setChats] = useState([<p>LOADING...</p>])
+    const [chattingState, setChattingState] = useState("0000000000000000000000000000")
     const user = useAuthState(props.authState)[0];
     const [messagesRoot, setMessagesRoot] = useState(collection(dataBaseRoot, "JJCHATS"))
     const dbListener = useCollection(messagesRoot);
 
     useEffect(() => {
-        if (chattingWith === "0000000000000000000000000000") {
+        console.log("running")
+        if (chattingState === "0000000000000000000000000000") {
             setMessagesRoot(collection(dataBaseRoot, "JJCHATS"))
-            console.log("JJCHATS")
+
         }
         else {
-            setMessagesRoot(collection(dataBaseRoot, getCollectionName(user!, usernames![chattingWith])))
-            console.log(getCollectionName(user!, usernames![chattingWith]))
+            setMessagesRoot(collection(dataBaseRoot, getCollectionName(user!, usernames![chattingState])))
         }
-    }, [)
-    console.log(chattingWith)
+    }, [chattingState])
     useEffect(() => {
         if (!dbListener[1]) {
             const arr = dbListener[0]!?.docs.map((messageJSON) => {
@@ -136,11 +137,11 @@ function Chatapp(props: PROPS) {
                         namesQuery.push(senderID);
                         console.log(namesQuery)
                     }
-                    return (displayMessage(messageJSON, user!.uid, name));
+                    return (displayMessage(messageJSON, user!.uid, name, setChattingState));
                 }
 
 
-                return (displayMessage(messageJSON, user!.uid, usernames[senderID]));
+                return (displayMessage(messageJSON, user!.uid, usernames[senderID], setChattingState));
             })
             setChats(arr);
         }
@@ -158,7 +159,7 @@ function Chatapp(props: PROPS) {
         })
     }, [namesQuery.length])
     const messageBox = useRef<HTMLDivElement>(null);
-    useEffect(() => autoScroller(autoScroll, messageBox));
+    useEffect(() => { autoScroller(autoScroll, messageBox); });
 
     // messageDocs.map((message))
     // console.log(messageDocs[0].data().msg)
@@ -177,7 +178,7 @@ function Chatapp(props: PROPS) {
                         onKeyDown={(e) => {
                             if (e.key === "Enter") {
                                 if (user!.uid) {
-                                    postMessage(user!.uid!, currMsg!, dataBaseRoot);
+                                    postMessage(user!.uid!, currMsg!, dataBaseRoot, getCollectionName(user!, usernames![chattingState]));
                                 }
                                 setCurrMsg("");
                             }
@@ -191,7 +192,7 @@ function Chatapp(props: PROPS) {
                     <p
                         onClick={() => {
                             if (user!.uid) {
-                                postMessage(user!.uid!, currMsg!, dataBaseRoot);
+                                postMessage(user!.uid!, currMsg!, dataBaseRoot, getCollectionName(user!, usernames![chattingState]));
                             }
                             setCurrMsg("");
                         }}
