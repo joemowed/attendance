@@ -1,3 +1,5 @@
+import { user } from "firebase-functions/v1/auth";
+import { User } from "firebase/auth";
 import { DocumentSnapshot } from "firebase/firestore";
 
 function docSnapToAttendanceUser(snap:DocumentSnapshot)
@@ -46,4 +48,24 @@ for(let i = 0; i < arr1.length; i++)
     }
 return true;
 }
-export {docSnapToAttendanceUser,attendanceUser, compareArrays}
+
+function getCollectionName(user1:User, user2:attendanceUser)
+{
+    let sum1 = 0;
+    let sum2 = 0;
+    for(let i=0; i<user1.uid.length; i++)
+    {
+        sum1 += user1.uid.charCodeAt(i)
+    }
+    for(let i = 0; i < user2.uid.length; i++)
+    {
+        sum2 += user2.uid.charCodeAt(i)
+    }
+    if(sum1 === sum2)
+    {
+        console.error("UID HAVE IDENTICAL SUMS")
+        return "IDENTICAL SUM ERROR";
+    }
+    return ((sum1 > sum2)? user1.uid + user2.uid : user2.uid + user1.uid)
+}
+export {docSnapToAttendanceUser,attendanceUser, compareArrays, getCollectionName}
