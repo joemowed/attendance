@@ -41,7 +41,7 @@ function Navbar(props: PROPS) {
   return (
     <div className="  h-full  w-full overflow-clip grid grid-rows-1 grid-cols-[90%10%] bg-teal-500/80 text-white text-5xl font-light   font-mono rounded-b-xl">
 
-      <p>{attendanceUserInfo.email}</p>
+      <p>{attendanceUserInfo.email} :email</p>
       <img ref={image} className=" max-h-full max-w-full my-auto p-[3%] aspect-square  rounded-full " src={(attendanceUserInfo.photoURL) ? attendanceUserInfo.photoURL : profileSrc} alt="" />
     </div>
   );
